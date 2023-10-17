@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import UsuarioRoute from '../routes/UsuarioRoutes';
 import db from '../db/conexion';
+import bodyParser from 'body-parser'; // Importa body-parser
 class Server {
 
   // declaracion de tipos de variables
@@ -16,13 +17,13 @@ class Server {
         
         // Configuraciones DB
         this.conectarDB();
+                // middlewares
+
+        this.middlewares(); 
         // Definir las rutas
 
         this.routes();
-        // middlewares
-        this.middlewares(); 
-
-        // conexion base de datos
+    
 
     }
 
@@ -34,20 +35,20 @@ class Server {
         throw new Error("base de datos no conectada");
       }
     }
+    middlewares() {
+      // CORS
+      this.app.use(cors());
+              // lectura del body
 
+     this.app.use(bodyParser.json());
+      // Directorio publico
+      this.app.use(express.static('public'));
+  }
     routes(){
         this.app.use(this.apiPaths.usuarios, UsuarioRoute);
     }
 
-    middlewares() {
-        // CORS
-        this.app.use(cors());
-                // lectura del body
-
-        this.app.use(express.json());
-        // Directorio publico
-        this.app.use(express.static('public'));
-    }
+  
 
     listen() {
         this.app.listen(this.port, () => {

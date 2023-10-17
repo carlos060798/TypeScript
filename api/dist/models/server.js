@@ -16,6 +16,7 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const UsuarioRoutes_1 = __importDefault(require("../routes/UsuarioRoutes"));
 const conexion_1 = __importDefault(require("../db/conexion"));
+const body_parser_1 = __importDefault(require("body-parser")); // Importa body-parser
 class Server {
     constructor() {
         this.apiPaths = {
@@ -25,11 +26,10 @@ class Server {
         this.port = process.env.PORT || 6000;
         // Configuraciones DB
         this.conectarDB();
-        // Definir las rutas
-        this.routes();
         // middlewares
         this.middlewares();
-        // conexion base de datos
+        // Definir las rutas
+        this.routes();
     }
     conectarDB() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -42,16 +42,16 @@ class Server {
             }
         });
     }
-    routes() {
-        this.app.use(this.apiPaths.usuarios, UsuarioRoutes_1.default);
-    }
     middlewares() {
         // CORS
         this.app.use((0, cors_1.default)());
         // lectura del body
-        this.app.use(express_1.default.json());
+        this.app.use(body_parser_1.default.json());
         // Directorio publico
         this.app.use(express_1.default.static('public'));
+    }
+    routes() {
+        this.app.use(this.apiPaths.usuarios, UsuarioRoutes_1.default);
     }
     listen() {
         this.app.listen(this.port, () => {

@@ -38,26 +38,59 @@ const getUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.getUsuario = getUsuario;
 const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { body } = req;
-        const usuario = usuariomodel_1.default.build(body);
-        yield usuario.save();
-        res.json({ msg: 'usuario creado',
-            usuario });
+        const { nombre, email, estado } = req.body;
+        console.log(nombre, email, estado);
+        // Verificar que todas las propiedades necesarias estén presentes
+        if (!nombre || !email || estado === undefined) {
+            return res.status(400).json({ msg: 'Faltan datos obligatorios' });
+        }
+        const user = yield usuariomodel_1.default.create({
+            nombre: nombre,
+            email: email,
+            estado: estado
+        });
+        res.status(201).json(user);
     }
     catch (err) {
-        console.log(err);
-        res.status(500).json({
-            msg: 'Hable con el administrador'
-        });
+        console.error(err);
+        res.status(500).json({ msg: 'Hable con el administrador', err });
     }
 });
 exports.postUsuario = postUsuario;
 const UpdateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.json({ msg: 'update Usuario' });
+    const { id } = req.params;
+    const { body } = req;
+    try {
+        const usuario = yield usuariomodel_1.default.findByPk(id);
+        if (!usuario) {
+            return res.status(404).json({
+                msg: `No existe un usuario con el id ${id}`
+            });
+        }
+        else {
+            yield usuario.update(body);
+            res.json({ msg: 'putUsuario', Usuario: usuario });
+        }
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ msg: 'Hable con el administrador', err });
+    }
 });
 exports.UpdateUsuario = UpdateUsuario;
 const DeleteUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.json({ msg: 'delete Usuario' });
+    const { id } = req.params;
+    const usuario = yield usuariomodel_1.default.findByPk(id);
+    if (!usuario) {
+        return res.status(404).json({
+            msg: `No existe un usuario con el id ${id}`
+        });
+    }
+    else {
+        // await usuario.destroy();
+        yield usuario.destroy();
+        res.json({ msg: 'delete Usuario' });
+    }
 });
 exports.DeleteUsuario = DeleteUsuario;
 //# sourceMappingURL=Usuarios.js.map
