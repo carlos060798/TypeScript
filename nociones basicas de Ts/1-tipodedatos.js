@@ -18,3 +18,13 @@ let numero6;
 function sumar(numero1) {
     console.log(numero1);
 }
+/*en este ejemplo se evidencia que typescript no asgna ningun valor p´ropiedad des de objetos inexistentes pero en cambio en js
+le atribuye valores  de undefined
+
+La propiedad 'location' no existe en el tipo '{ name: string; age: number; }'.ts(2339)
+const user = {
+    name: "Daniel",
+    age: 26,
+  };
+  user.location;
+*/

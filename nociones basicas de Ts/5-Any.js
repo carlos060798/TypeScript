@@ -15,9 +15,3 @@ let data2 = 123;
 console.log(data2.charAt(2));
 // forma 2 de castear
 console.log(data2.charAt(2));
-
-const user = {
-    name: "Daniel",
-    age: 26,
-  };
- console.log( user.location);
