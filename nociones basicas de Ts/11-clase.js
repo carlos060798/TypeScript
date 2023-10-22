@@ -46,3 +46,14 @@ class trabajador extends persona {
     }
 }
 const trabajador1 = new trabajador('Juan', 30, 'Programador');
+// clases abstractas en typescript
+// Son clases para  crear otras clases
+class Mutante {
+    constructor(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+}
+class Xmen extends Mutante {
+}
+const wolverine = new Xmen('Logan', 30);
